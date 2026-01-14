@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const initialState = {
     bids: [],
@@ -12,7 +12,7 @@ export const placeBid = createAsyncThunk(
     'bids/placeBid',
     async ({ gigId, amount, message }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post('/api/bids', { gigId, amount, message });
+            const { data } = await api.post('/bids', { gigId, amount, message });
             return data;
         } catch (error) {
             return rejectWithValue(
@@ -28,7 +28,7 @@ export const fetchBidsByGig = createAsyncThunk(
     'bids/fetchByGig',
     async (gigId, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/bids/${gigId}`);
+            const { data } = await api.get(`/bids/${gigId}`);
             return data;
         } catch (error) {
             return rejectWithValue(
@@ -44,7 +44,7 @@ export const hireFreelancer = createAsyncThunk(
     'bids/hire',
     async (bidId, { rejectWithValue }) => {
         try {
-            const { data } = await axios.patch(`/api/bids/${bidId}/hire`);
+            const { data } = await api.patch(`/bids/${bidId}/hire`);
             return data;
         } catch (error) {
             return rejectWithValue(
@@ -60,7 +60,7 @@ export const fetchMyBids = createAsyncThunk(
     'bids/fetchMyBids',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get('/api/bids/my');
+            const { data } = await api.get('/bids/my');
             return data;
         } catch (error) {
             return rejectWithValue(

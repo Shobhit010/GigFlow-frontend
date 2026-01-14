@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const initialState = {
     gigs: [],
@@ -13,7 +13,7 @@ export const fetchGigs = createAsyncThunk(
     'gigs/fetchAll',
     async (keyword = '', { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/gigs?keyword=${keyword}`);
+            const { data } = await api.get(`/gigs?keyword=${keyword}`);
             return data;
         } catch (error) {
             return rejectWithValue(
@@ -45,7 +45,7 @@ export const createGig = createAsyncThunk(
             // I added proxy in vite.config.js, so same origin should work.
             // But verify global axios config.
 
-            const { data } = await axios.post('/api/gigs', gigData);
+            const { data } = await api.post('/gigs', gigData, config);
             return data;
         } catch (error) {
             return rejectWithValue(
@@ -61,7 +61,7 @@ export const fetchGigById = createAsyncThunk(
     'gigs/fetchById',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/api/gigs/${id}`);
+            const { data } = await api.get(`/gigs/${id}`);
             return data;
         } catch (error) {
             return rejectWithValue(
@@ -77,7 +77,7 @@ export const fetchMyGigs = createAsyncThunk(
     'gigs/fetchMyGigs',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get('/api/gigs/my');
+            const { data } = await api.get('/gigs/my');
             return data;
         } catch (error) {
             return rejectWithValue(
