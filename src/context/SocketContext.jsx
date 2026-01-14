@@ -18,17 +18,17 @@ export const SocketProvider = ({ children }) => {
     useEffect(() => {
         // Only connect if user is logged in
         if (userInfo) {
-            const socketInstance = io("http://localhost:5000"); // Backend URL
+            const socketInstance = io(import.meta.env.VITE_API_URL || "http://localhost:5000"); // Backend URL
 
             setSocket(socketInstance);
 
             socketInstance.on("connect", () => {
-                console.log("Socket connected:", socketInstance.id);
+
                 socketInstance.emit("register", userInfo._id);
             });
 
             socketInstance.on("notification", (data) => {
-                console.log("Notification received:", data);
+
                 setNotification(data);
 
                 // Auto dismiss after 5 seconds
